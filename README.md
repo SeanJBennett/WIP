@@ -1,1 +1,1 @@
-# WIP
+# WIP - Your Personal Desktop Assistant
