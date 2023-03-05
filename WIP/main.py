@@ -5,6 +5,8 @@
 import pyttsx3 #pip install pyttsx3
 import speech_recognition as sprec #pip install speechRecognition
 import datetime
+import calendar
+from num2words import num2words #pip install num2words
 import wikipedia #pip install wikipedia
 import os
 import smtplib
@@ -17,8 +19,16 @@ def speak(textToSpeech):
     engine.say(textToSpeech)
     engine.runAndWait()
 
+def dailyIntro():
+    month = datetime.datetime.now().month
+    date = datetime.datetime.now().day
+    textToSpeech = "Hello, the current date is " + calendar.day_name[date] + calendar.month_name[month] + num2words(date, ordinal=True)
+
+    engine.say(textToSpeech)
+    engine.runAndWait()
+
 def main():
-    speak("Hello, this is a test")
+    dailyIntro()
 
 if __name__=="__main__":
     main()
