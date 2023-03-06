@@ -10,6 +10,7 @@ from num2words import num2words #pip install num2words
 import wikipedia #pip install wikipedia
 import os
 import smtplib
+import config
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
