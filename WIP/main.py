@@ -32,7 +32,6 @@ def listen():
     try:
         speak("Give me one moment.")
         query = takenSpeech.recognize_google(audio, language='en-us')
-        #print(f"user said: {query} \n")
 
     except Exception as e:
         speak("Say that again please.")
