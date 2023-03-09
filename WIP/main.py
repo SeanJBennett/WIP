@@ -23,11 +23,34 @@ def speak(textToSpeech):
     engine.say(textToSpeech)
     engine.runAndWait()
 
+def listen():
+    takenSpeech = sprec.Recognizer()
+    with sprec.Microphone() as source:
+        speak("What would you like to know?")
+        audio = takenSpeech.listen(source)
+
+    try:
+        speak("Give me one moment.")
+        query = takenSpeech.recognize_google(audio, language='en-us')
+        #print(f"user said: {query} \n")
+
+    except Exception as e:
+        speak("Say that again please.")
+        query = None
+
+    return query
+
+def searchWikipedia(query):
+    query = query.replace('Wikipedia', "")
+    result = wikipedia.summary(query, sentences = 2)
+    speak("According to Wikipedia: " + result)
+
 def dailyIntro():
     # Setting up TTS to say current date, month and ordinal calendar number
     month = datetime.datetime.now().month
     date = datetime.datetime.now().day
-    textToSpeech = "Hello, the current date is " + calendar.day_name[date] + calendar.month_name[month] + num2words(date, ordinal=True)
+    day = datetime.datetime.now().weekday()
+    textToSpeech = "Hello, the current date is " + calendar.day_name[day] + calendar.month_name[month] + num2words(date, ordinal=True)
 
     # Setting up TTS to add on the current top news articles I am getting from this request
     textToSpeech = textToSpeech + ". The top news articles in the US are: "
@@ -39,7 +62,7 @@ def dailyIntro():
     newsItems = json.loads(body)
 
     articles = newsItems['articles']
-    for title in range(0, 3):
+    for title in range(0, 1):
         titles = articles[title]
         textToSpeech += "\n" + titles['title']
 
@@ -48,6 +71,9 @@ def dailyIntro():
 
 def main():
     dailyIntro()
+    query = listen()
+    if 'Wikipedia' in query:
+        searchWikipedia(query)
 
 if __name__=="__main__":
     main()
